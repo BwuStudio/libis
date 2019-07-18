@@ -1,0 +1,19 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "server": "node ./server.js", 
+    "entry": "cd ./packages/entry && rollup -c",
+    "bundle": "cd ./packages/bundle && rollup -c",
+    "validate": "cd ./packages/validate && rollup -c",
+    "api": "cd ./packages/api && rollup -c",
+    "polyfill": "cd ./packages/polyfill && rollup -c",
+    "shelf": "cd ./packages/shelf && rollup -c",
+    "event": "cd ./packages/event && rollup -c"
+  },
+  "devDependencies": {
+    "koa": "^2.7.0",
+    "koa-static": "^5.0.0",
+    "lerna": "^3.15.0"
+  }
+}

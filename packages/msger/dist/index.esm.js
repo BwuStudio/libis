@@ -1,0 +1,17 @@
+function Event(){
+    var obj = {};
+
+    return {
+        regist:function(name,cb){
+            obj[name] = cb;
+            return this
+        },
+        emit:function(name,args){
+            if(!obj[name]) return console.warn("can't find method named '"+name+'" !')
+            return obj[name].apply(null,args || [])
+        
+        }
+    }
+}
+
+export default Event;

@@ -1,0 +1,19 @@
+{
+  "name": "polyfill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/polyfill.cjs.js",
+  "module": "dist/polyfill.esm.js",
+  "browser": "dist/polyfill.umd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "rollup": "^1.16.6",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  }
+}
