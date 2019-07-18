@@ -1,7 +1,7 @@
 # Api
 
 ## 介绍
-Api.js 是一个金额口
+Api.js 是一个基于 promise 以及 $.ajax 的 HTTP 库
 
 ## 引入
 通过 `/libis/packages/api/dist/index.umd.js` 加载
