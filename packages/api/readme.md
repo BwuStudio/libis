@@ -38,9 +38,11 @@ ajax.getPersonDetail('bwuning')
 
 ## Promise 对象
 Q1：什么是 Promise？
+
 A1：Promise 为 JavaScript 标准库所提供的一套用于异步流程管理的 Api，详细情况可参考文档   [Promise - JavaScript | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 Q2：为什么返回 Promise ，而非 jQuery 回调函数的方式？
+
 A2：Promise 是一套专门关于异步控制的 Api，相比传统的回调函数，能有效控制多个异步任务。
 ```
 var api = Api(function (ajax) {
@@ -75,6 +77,7 @@ var api = Api(function (ajax) {
 ```
 
 Q3：使用 Promise 的时候有什么主意事项？ 
+
 A3：由于 `Promise` 的两个方法 `catch` `finally` 使用到了 ie8 的关键字，所以当使用这两个方法的时候，需要用字面量的方式
 ```
 // 不兼容 ie8
