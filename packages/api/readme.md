@@ -1,4 +1,4 @@
-# Api
+# Api.js
 
 ## 介绍
 Api.js 是一个基于 promise 以及 $.ajax 的 HTTP 库
@@ -85,3 +85,13 @@ promise().catch(function(err){alert(err)})
 // 兼容 ie8 的方式
 promise()['catch'](function(err){alert(err)})
 ```
+
+## 数据格式
+### 请求数据
+在发送请求的会对传输的数据进行数据转换。
+当发送 `get` 请求的时候，数据会以 url 参数的形式传递给后台 `eg: /api?name=value&name1=value2`
+当发送 `post` 请求的时候，数据会以 json 字符串的形式传递给后台
+
+### 响应数据
+当 ajax 结束的时候，如果传输成功，后台则会返回一个包装后的 json 字符串。其中 Code 字段返回此次请求的状态，0 为成功，此时对应的 Data 字段包含了此次请求返回的数据，Api.js 则会将数据返回给 Promise，并将 Promise 的状态变更为 resolve。
+如果传输失败，亦或者结果的 Code 字段不为 0，Promise 的状态将更改为 reject，并返回失败信息。其中当传输失败，返回 xhr 中的信息，如果传输成功则返回，Msg 属性的信息
