@@ -45,7 +45,7 @@ A1：Promise 为 JavaScript 标准库所提供的一套用于异步流程管理�
 Q2：为什么返回 Promise ，而非 jQuery 回调函数的方式？
 
 A2：Promise 是一套专门关于异步控制的 Api，相比传统的回调函数，能有效控制多个异步任务。
-```
+``` javaScript
 var api = Api(function (ajax) {
     return {
         api1: function () {
