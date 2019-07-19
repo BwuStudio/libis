@@ -11,7 +11,7 @@ Api.js 是一个基于 promise 以及 $.ajax 的 HTTP 库
 ## 概览
 ### 生成实例
 `Api` 为构造函数，接受一个回调函数，其入参为 ajax 工具类（api 结构类似于 jQery $.ajax）,返回值为一个 Map 结构的对象，其值为调用 ajax 的函数。
-```
+``` javaScript
  var api = Api(function (ajax) {
     return {
         getPersonList: function () {
@@ -32,7 +32,7 @@ Api.js 是一个基于 promise 以及 $.ajax 的 HTTP 库
 ```
 ### 调用接口
 通过调用 `api` 实例上的函数，访问后台接口，其返回值为一个包含返回结果的 Promise 对象。
-```
+``` javaScript
 ajax.getPersonDetail('bwuning')
     .then(function(data){console.log(data.name)}) 
 ```
@@ -80,7 +80,7 @@ var api = Api(function (ajax) {
 Q3：使用 Promise 的时候有什么主意事项？ 
 
 A3：由于 `Promise` 的两个方法 `catch` `finally` 使用到了 ie8 的关键字，所以当使用这两个方法的时候，需要用字面量的方式
-```
+``` javaScript
 // 不兼容 ie8
 promise().catch(function(err){alert(err)})
 // 兼容 ie8 的方式
@@ -96,7 +96,7 @@ promise()['catch'](function(err){alert(err)})
 当发送 `post` 请求的时候，数据会以 json 字符串的形式传递给后台
 
 ### 响应数据
-```
+``` javaScript
 {
     "Code": 0,// 0 为请求成功状态码，其他为请求失败
     "Data": {...}, // 请求成功的时候需要有 Data 字段，包含了响应数据
