@@ -1,7 +1,7 @@
 # Msger.js
 
 ## 介绍
-`Msger.js` 是用于全局事件管理的库，主要作用时规范跨页面的数据通讯方式。
+`Msger.js` 是用于全局事件管理的库，主要作用是规范跨页面的数据通讯方式。
 
 ## 引用
 通过 `/libis/packages/msger/dist/index.umd.js` 加载
