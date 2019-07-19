@@ -33,7 +33,7 @@ Api.js 是一个基于 promise 以及 $.ajax 的 HTTP 库
 ### 调用接口
 通过调用 `api` 实例上的函数，访问后台接口，其返回值为一个包含返回结果的 Promise 对象。
 ``` javaScript
-ajax.getPersonDetail('bwuning')
+api.getPersonDetail('bwuning')
     .then(function(data){console.log(data.name)}) 
 ```
 
@@ -77,7 +77,7 @@ var api = Api(function (ajax) {
 })
 ```
 
-Q3：使用 Promise 的时候有什么主意事项？ 
+Q3：使用 Promise 的时候有什么注意事项？ 
 
 A3：由于 `Promise` 的两个方法 `catch` `finally` 使用到了 ie8 的关键字，所以当使用这两个方法的时候，需要用字面量的方式
 ``` javaScript
@@ -104,6 +104,6 @@ promise()['catch'](function(err){alert(err)})
 }
 ```
 
-当 ajax 结束的时候，如果传输成功，后台则会返回一个包装后的 json 字符串。其中 `Code` 字段返回此次请求的状态，0 为成功，此时对应的 `Data` 字段包含了此次请求返回的数据，Api.js 则会将数据返回给 Promise，并将 Promise 的状态变更为 resolve。
+当 ajax 结束的时候，如果传输成功，后台则会返回一个包装后的 json 字符串。其中 `Code` 字段返回此次请求的状态，0 为成功，此时对应的 `Data` 字段包含了此次请求返回的数据，Api.js 则会将数据返回给 Promise，并将 Promise 的状态变更为 `resolve`。
 
-如果传输失败，亦或者结果的 `Code` 字段不为 0，Promise 的状态将更改为 reject，并返回失败信息。其中当传输失败，返回 xhr 中的信息，如果传输成功则返回 `Msg` 字段的信息
+如果传输失败，亦或者结果的 `Code` 字段不为 0，Promise 的状态将更改为 `reject`，并返回失败信息。其中当传输失败，返回 xhr 中的信息，如果传输成功则返回 `Msg` 字段的信息
