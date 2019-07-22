@@ -1385,20 +1385,28 @@ $(function () {
     });
 });
 
-function Event(){
-    var obj = {};
+var obj = {};
 
-    return {
-        regist:function(name,cb){
-            obj[name] = cb;
-            return this
-        },
-        emit:function(name,args){
-            if(!obj[name]) return console.warn("can't find method named '"+name+'" !')
-            return obj[name].apply(null,args || [])
-        
-        }
+var outer = {
+    regist: function (name, cb) {
+        obj[name] = cb;
+        return this
+    },
+    emit: function (name, args) {
+        if (!obj[name]) return console.warn("can't find method named '" + name + '" !')
+        return obj[name].apply(null, args || [])
+
+    },
+    cancel: function (name) {
+        obj[name] = null;
+        return this
     }
+};
+
+function Msger(win) {
+    var w = win ? win.contentWindow ? win.contentWindow : win : null;
+    
+    return w ? w.Msger() : outer
 }
 
 function Dom$1(str) {
@@ -1411,12 +1419,12 @@ function Dom$1(str) {
 window.Validate = Validate;
 window.Api = Api;
 window.Shelf = Shelf;
-window.Msger = Event;
+window.Msger = Msger;
 window.Dom = Dom$1;
 
 exports.Api = Api;
 exports.Dom = Dom$1;
-exports.Msger = Event;
+exports.Msger = Msger;
 exports.Shelf = Shelf;
 exports.Validate = Validate;
 //# sourceMappingURL=index.cjs.js.map

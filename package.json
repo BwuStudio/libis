@@ -9,7 +9,7 @@
     "api": "cd ./packages/api && rollup -c",
     "polyfill": "cd ./packages/polyfill && rollup -c",
     "shelf": "cd ./packages/shelf && rollup -c",
-    "event": "cd ./packages/event && rollup -c"
+    "msger": "cd ./packages/msger && rollup -c"
   },
   "devDependencies": {
     "koa": "^2.7.0",
