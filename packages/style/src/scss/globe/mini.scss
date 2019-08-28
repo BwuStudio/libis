@@ -1,0 +1,57 @@
+/* input-hook */
+
+.mini-datepicker {
+  width: 100%;
+  height: 26px;
+  line-height: 26px;
+}
+
+.mini-buttonedit-border {
+  height: 24px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.mini-buttonedit-border > input {
+  line-height: 24px;
+  height: 24px;
+  font-size: 14px;
+}
+
+.mini-buttonedit-button,
+.mini-buttonedit-close {
+  height: 20px;
+}
+
+.mini-buttonedit {
+  display: inline-block;
+  height: 26px;
+  width: 100%;
+  /* float: left; */
+}
+
+/* grid hook*/
+
+.mini-grid-headerCell {
+  background: rgb(239, 245, 250);
+}
+
+.mini-grid-pager {
+  background: rgb(239, 245, 250);
+}
+
+.mini-grid-headerCell {
+  vertical-align: middle;
+}
+
+.mini-panel-border {
+  border: 1px solid #ccc;
+}
+
+.mini-grid-headerCell {
+  border-color: #ccc;
+}
+
+.mini-grid-cell {
+  vertical-align: middle;
+}

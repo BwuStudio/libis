@@ -1,0 +1,21 @@
+// panel & globe
+.globe,
+.panel {
+  height: 100%;
+  width: auto;
+  display: block;
+  position: relative;
+
+  @import "./body.scss";
+  @import "./head.scss";
+  @import "./foot.scss";
+
+  // 侧边栏样式
+  @import "./sider.scss";
+
+  // mini ui 样式修改
+  @import "./mini.scss";
+
+  // mini ui 样式修改
+  @import "./row.scss";
+}

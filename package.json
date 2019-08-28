@@ -3,13 +3,16 @@
   "private": true,
   "scripts": {
     "server": "node ./server.js", 
+    
     "entry": "cd ./packages/entry && rollup -c",
     "bundle": "cd ./packages/bundle && rollup -c",
     "validate": "cd ./packages/validate && rollup -c",
     "api": "cd ./packages/api && rollup -c",
     "polyfill": "cd ./packages/polyfill && rollup -c",
     "shelf": "cd ./packages/shelf && rollup -c",
-    "msger": "cd ./packages/msger && rollup -c"
+    "msger": "cd ./packages/msger && rollup -c",
+    "style": "cd ./packages/style && rollup -c",
+    "dom": "cd ./packages/dom && rollup -c"
   },
   "devDependencies": {
     "koa": "^2.7.0",

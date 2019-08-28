@@ -1,0 +1,32 @@
+// head
+&.with_head {
+  padding-top: 33px;
+
+  > .head {
+    height: 33px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid #ccc;
+    padding: 0 8px;
+
+    > .row {
+      display: block;
+      position: relative;
+      height: 32px;
+      padding: 3px 0;
+    }
+  }
+}
+
+// head 有多行
+@for $i from 1 through 3 {
+  &.with_head_row_#{$i} {
+    padding-top: 32px * $i + 1px;
+
+    > .head {
+      height: 32px * $i + 1px;
+    }
+  }
+}

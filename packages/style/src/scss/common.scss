@@ -1,0 +1,28 @@
+#searchResult {
+    display: none;
+}
+
+/* common style */
+
+* {
+    box-sizing: border-box
+}
+
+a {
+    text-decoration: none;
+}
+
+
+html, html body {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    font-size: 14px;
+}
+
+.globe, .panel {
+    height: 100%;
+    width: auto;
+    display: block;
+    position: relative;
+}

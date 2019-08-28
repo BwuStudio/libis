@@ -455,9 +455,14 @@ function throttle(fn, delay) {
 function common(op, component, store) {
     var option = $.extend({}, op);
 
+    console.log(option);
+
     var name = option.name;
     var path = option.path;
     var template = option.template;
+    var $static = option.static || {};
+
+    console.log($static);
 
     var cmptClass = component;
 
@@ -468,49 +473,57 @@ function common(op, component, store) {
     return {
         name: name,
         path: path,
-        creator: function (container, props) {
-            var cntr = container || dom('<div></div>');
-            var option = cmptClass() || {};
-            var cmpt = store.find(function (v) { return v.name === name });
-            var template = cmpt ? cmpt.template ? cmpt.template : [] : [];
+        creator: $.extend(
+            function (container, props) {
+                var cntr = container || dom('<div></div>');
+                var option = cmptClass() || {};
+                var cmpt = store.find(function (v) { return v.name === name });
+                var template = cmpt ? cmpt.template ? cmpt.template : [] : [];
 
-            var render = option.render || function (props) { return props || {} };
-            var init = option.init || function () { };
+                var render = option.render || function (props) { return props || {} };
+                var init = option.init || function () { };
 
-            var data = render(props);
-            var html = load$1(template, data);
-            var outer = option.outer || {};
+                var data = render(props);
+                var html = load$1(template, data);
+                var outer = option.outer || {};
 
-            var obj = {
-                name: name,
-                data: data,
-                root: cntr,
-                template: template,
-                update: throttle(function () {
-                    cntr.innerHTML = load$1(obj.template, obj.data);
-                    init.call(obj, cntr);
-                }, 100),
-                emit: function (name, argus) {
-                    if (typeof outer[name] === 'function') {
-                        return outer[name].apply(obj, argus ? argus : [])
+                var obj = {
+                    name: name,
+                    data: data,
+                    root: cntr,
+                    template: template,
+                    update: throttle(function () {
+                        $(cntr).children().get().forEach(function (v) {
+                            cntr.removeChild(v);
+                        });
+                        cntr.innerHTML = load$1(obj.template, obj.data);
+                        init.call(obj, cntr);
+                    }, 100),
+                    emit: function (name, argus) {
+                        if (typeof outer[name] === 'function') {
+                            return outer[name].apply(obj, argus ? argus : [])
+                        }
+                    },
+                    destroy: function () {
+                        $(obj.root).remove();
+                        delete obj.template;
+                        delete obj.data;
+                        delete obj.name;
+                        delete obj.root;
+                        delete obj.update;
+                        delete obj.destroy;
+                        delete obj.emit;
                     }
-                },
-                distroy: function () {
-                    $(obj.root).remove();
-                    delete obj.template;
-                    delete obj.data;
-                    delete obj.name;
-                    delete obj.root;
-                    delete obj.update;
-                    delete obj.distroy;
-                    delete obj.emit;
-                }
-            };
-
-            cntr.innerHTML = html;
-            init.call(obj, cntr);
-            return obj
-        }
+                };
+                $(cntr).children().get().forEach(function (v) {
+                    cntr.removeChild(v);
+                });
+                cntr.innerHTML = html;
+                init.call(obj, cntr);
+                return obj
+            },
+            $static
+        )
     }
 }
 

@@ -127,14 +127,14 @@
                             return outer[name].apply(obj, argus ? argus : [])
                         }
                     },
-                    distroy: function () {
+                    destroy: function () {
                         $(obj.root).remove()
                         delete obj.template
                         delete obj.data
                         delete obj.name
                         delete obj.root
                         delete obj.update
-                        delete obj.distroy
+                        delete obj.destroy
                         delete obj.emit
                     }
                 }

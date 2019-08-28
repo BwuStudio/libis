@@ -1,0 +1,70 @@
+.row {
+  line-height: 26px;
+  padding: 3px 6px;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+
+  > label {
+    display: block;
+    text-align: right;
+  }
+
+  > div > input {
+    height: 26px;
+    width: 100%;
+    display: block;
+    line-height: 26px;
+    padding: 0 0 0 6px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    float: left;
+    outline: none;
+  }
+
+  > div > input:focus {
+    border-color: #808891;
+  }
+
+  > * {
+    overflow: hidden;
+  }
+
+  $n: 12;
+  @for $i from 1 through $n {
+    > .col-#{$i} {
+      line-height: 26px;
+      padding: 0 6px;
+      float: left;
+      position: relative;
+    }
+
+    > .row.col-#{$i} {
+      padding: 0;
+    }
+
+    > .mini-datepicker.col-#{$i} {
+      padding: 0;
+    }
+
+    > .mini-datepicker.col-#{$i} {
+      padding: 0;
+    }
+
+    > .mini-buttonedit.col-#{$i} {
+      padding: 0;
+    }
+
+    > .mini-autocomplete.col-#{$i} {
+      padding: 0;
+    }
+
+    > .col-#{$i} {
+      width: 100% / $n * $i;
+    }
+
+    > .offset-#{$i} {
+      margin-left: 100% / $n * $i;
+    }
+  }
+}

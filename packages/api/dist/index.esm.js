@@ -21,11 +21,11 @@ function ajax(op) {
             async: true,
             success: function (data) {
                 try {
-                    var ms = JSON.parse(data);
-                    if (ms.Code === 0 || ms.Code === "0") {
-                        res(ms.Data);
+                    var ms = typeof data == 'string' ? JSON.parse(data) : data;
+                    if (ms.Code === 0 || ms.Code === "0" || ms.code === 0 || ms.code === "0") {
+                        res(ms.Data || ms.data);
                     } else {
-                        rej(ms.Desc);
+                        rej(ms.Desc || ms.msg || ms.Msg);
                     }
                 }
                 catch (e) { rej(data); }

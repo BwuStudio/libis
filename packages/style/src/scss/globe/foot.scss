@@ -1,0 +1,12 @@
+ // foot
+ &.with_foot {
+    padding-bottom: 32px;
+    > .foot {
+      height: 32px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 8px;
+    }
+  }
