@@ -55,3 +55,17 @@
 .mini-grid-cell {
   vertical-align: middle;
 }
+
+.mini-grid-table.mini-grid-rowstable {
+  overflow: hidden;
+}
+
+.mini-grid-table.mini-grid-rowstable,
+.mini-grid-table.mini-grid-rowstable {
+  overflow: visible;
+}
+
+.mini-grid-table.mini-grid-rowstable .mini-grid-row > td:last-child,
+.mini-grid-table.mini-grid-rowstable.mini-grid-row > td:last-child {
+  border-right-width: 0;
+}

@@ -93,6 +93,24 @@
       };
     }
   
+
+    function flat(arr, depth) {
+      if (depth <= 0) return arr
+      if (!arr.some(function (a) { return a instanceof Array })) return arr
+
+      var res = [];
+
+      arr.forEach(function (a) {
+        if (a instanceof Array) {
+          a.forEach(function (v) { res.push(v); });
+        } else {
+          res.push(a);
+        }
+      });
+
+      return flat(res, depth--)
+    }
+    
     if (!Array.prototype.flat) {
   
       Array.prototype.flat = function (depth) {
@@ -101,22 +119,7 @@
         return flat(this, depth ? depth : 1)
       };
   
-      function flat(arr, depth) {
-        if (depth <= 0) return arr
-        if (!arr.some(function (a) { return a instanceof Array })) return arr
-  
-        var res = [];
-  
-        arr.forEach(function (a) {
-          if (a instanceof Array) {
-            a.forEach(function (v) { res.push(v); });
-          } else {
-            res.push(a);
-          }
-        });
-  
-        return flat(res, depth--)
-      }
+      
     }
   
     if (!Array.prototype.reduce) {
@@ -441,3 +444,37 @@
     }
   
   })));
+
+if (!Object.keys) {
+    Object.keys = (function () {
+      var hasOwnProperty = Object.prototype.hasOwnProperty,
+          hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+          dontEnums = [
+            'toString',
+            'toLocaleString',
+            'valueOf',
+            'hasOwnProperty',
+            'isPrototypeOf',
+            'propertyIsEnumerable',
+            'constructor'
+          ],
+          dontEnumsLength = dontEnums.length;
+  
+      return function (obj) {
+        if (typeof obj !== 'object' && typeof obj !== 'function' || obj === null) throw new TypeError('Object.keys called on non-object');
+  
+        var result = [];
+  
+        for (var prop in obj) {
+          if (hasOwnProperty.call(obj, prop)) result.push(prop);
+        }
+  
+        if (hasDontEnumBug) {
+          for (var i=0; i < dontEnumsLength; i++) {
+            if (hasOwnProperty.call(obj, dontEnums[i])) result.push(dontEnums[i]);
+          }
+        }
+        return result;
+      }
+    })();
+  }

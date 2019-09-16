@@ -105,14 +105,6 @@
                 container.innerHTML = html
 
 
-
-                // var words = createWords(_store[name].template)
-                // console.log(words)
-                // var tree = createTree(words)
-                // console.log(tree)
-                // var content = translateTree(tree)
-                // console.log(content)
-
                 var obj = {
                     name: name,
                     template: _store[name].template,

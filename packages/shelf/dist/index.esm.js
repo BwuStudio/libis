@@ -277,11 +277,8 @@ function createContent(str) {
 
 function parse (str) {
     var words = createWords(str);
-    // console.log(words)
     var tree = createTree(words);
-    // console.log(tree)
     var content = translateTree(tree);
-    // console.log(content)
     return content
 }
 
@@ -455,14 +452,10 @@ function throttle(fn, delay) {
 function common(op, component, store) {
     var option = $.extend({}, op);
 
-    console.log(option);
-
     var name = option.name;
     var path = option.path;
     var template = option.template;
     var $static = option.static || {};
-
-    console.log($static);
 
     var cmptClass = component;
 
@@ -483,11 +476,18 @@ function common(op, component, store) {
                 var render = option.render || function (props) { return props || {} };
                 var init = option.init || function () { };
 
-                var data = render(props);
+                var obj = {};
+
+                var data = render.call(obj, props);
                 var html = load$1(template, data);
                 var outer = option.outer || {};
+                var events = option.events || [];
+                var inner = events.reduce(function (res, name) {
+                    res[name] = function () { };
+                    return res
+                }, {});
 
-                var obj = {
+                $.extend(obj, {
                     name: name,
                     data: data,
                     root: cntr,
@@ -504,6 +504,19 @@ function common(op, component, store) {
                             return outer[name].apply(obj, argus ? argus : [])
                         }
                     },
+                    regist: function (name, fn) {
+                        if (!events.find(function (v) { return v === name })) {
+                            console.warn('This component does not support the Event named ' + name);
+                        } else {
+                            inner[name] = fn || function () {};
+                        }
+                        return obj
+                    },
+                    send: function (name, argus) {
+                        if (typeof inner[name] === 'function') {
+                            return inner[name].apply(obj, argus ? argus : [])
+                        }
+                    },
                     destroy: function () {
                         $(obj.root).remove();
                         delete obj.template;
@@ -514,7 +527,7 @@ function common(op, component, store) {
                         delete obj.destroy;
                         delete obj.emit;
                     }
-                };
+                });
                 $(cntr).children().get().forEach(function (v) {
                     cntr.removeChild(v);
                 });

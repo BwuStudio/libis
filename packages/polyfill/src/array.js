@@ -91,6 +91,24 @@
       }
     }
   
+
+    function flat(arr, depth) {
+      if (depth <= 0) return arr
+      if (!arr.some(function (a) { return a instanceof Array })) return arr
+
+      var res = []
+
+      arr.forEach(function (a) {
+        if (a instanceof Array) {
+          a.forEach(function (v) { res.push(v) })
+        } else {
+          res.push(a)
+        }
+      })
+
+      return flat(res, depth--)
+    }
+    
     if (!Array.prototype.flat) {
   
       Array.prototype.flat = function (depth) {
@@ -99,22 +117,7 @@
         return flat(this, depth ? depth : 1)
       }
   
-      function flat(arr, depth) {
-        if (depth <= 0) return arr
-        if (!arr.some(function (a) { return a instanceof Array })) return arr
-  
-        var res = []
-  
-        arr.forEach(function (a) {
-          if (a instanceof Array) {
-            a.forEach(function (v) { res.push(v) })
-          } else {
-            res.push(a)
-          }
-        })
-  
-        return flat(res, depth--)
-      }
+      
     }
   
     if (!Array.prototype.reduce) {

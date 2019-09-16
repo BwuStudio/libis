@@ -2,6 +2,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var Msger = _interopDefault(require('msger'));
+
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function createCommonjsModule(fn, module) {
@@ -768,11 +772,11 @@ function ajax(op) {
             async: true,
             success: function (data) {
                 try {
-                    var ms = JSON.parse(data);
-                    if (ms.Code === 0 || ms.Code === "0") {
-                        res(ms.Data);
+                    var ms = typeof data == 'string' ? JSON.parse(data) : data;
+                    if (ms.Code === 0 || ms.Code === "0" || ms.code === 0 || ms.code === "0") {
+                        res(ms.Data || ms.data);
                     } else {
-                        rej(ms.Desc);
+                        rej(ms.Desc || ms.msg || ms.Msg);
                     }
                 }
                 catch (e) { rej(data); }
@@ -795,9 +799,14 @@ function ajax(op) {
 function Api(func) {
     var res = {};
     var reg = function (name, call) { res[name] = call; };
-    func(ajax, reg);
+    var a = func(ajax, reg);
+    if(a){
+        $.extend(res,a);
+    }
     return res
 }
+
+Api.create = function (f) { return Api(f) };
 
 function get (src) {
     return new Promise(function (res, rej) {
@@ -1078,24 +1087,346 @@ function createContent(str) {
 
 function parse (str) {
     var words = createWords(str);
-    console.log(words);
     var tree = createTree(words);
-    console.log(tree);
     var content = translateTree(tree);
-    console.log(content);
     return content
+}
+
+var _CONTENT_$1 = '_CONTENT_';
+var _DATA_$1 = '_DATA_';
+
+
+var _QUEUE_$1 = '_QUEUE_';
+var _IF_BLOCK_$1 = '_IF_BLOCK_';
+var _IF_CASE_$1 = '_IF_CASE_';
+var _LOOP_CASE_$1 = '_LOOP_TREE_';
+
+
+// 解决严格模式不能用 with 语句的问题
+var evalData = new Function('__str__', 'data',
+    'try {' +
+    'with (data) {' +
+    'return eval(__str__.replace(/\\&amp\\;/g, "&").replace(/\\&gt\\;/, ">"))' +
+    '}' +
+    '} catch (e) {' +
+    'console.warn("err:" + __str__)' +
+    '}'
+);
+
+window.evalData = evalData;
+
+function load(v, data) {
+
+    if (!v) return ''
+
+    if (typeof v === 'string') return v
+
+    if (v instanceof Array) return v.map(function (v) { return load(v, data) }).join('')
+
+    switch (v.type) {
+
+        case _CONTENT_$1: return load(v.queue, data)
+
+        case _QUEUE_$1: return load(v.queue, data)
+
+        case _DATA_$1: return evalData(v.data, data)
+
+        case _IF_BLOCK_$1:
+            var r = v.ifCaseArr.find(function (cas) {
+                if (cas.type !== _IF_CASE_$1) throw new Error('shelf parse error')
+                if (evalData(cas.condition, data)) return true
+                else return false;
+            });
+
+            if (r) return load(r.queue, data)
+            else return ''
+
+        case _LOOP_CASE_$1:
+            var arr = evalData(v.array, data);
+            if (!(arr instanceof Array)) throw new Error('shelf parse error')
+
+            return arr.map(function (item, index, array) {
+                return load(v.queue, $.extend({}, data, { _index: index, _item: item, _array: array }))
+            }).join('')
+    }
 }
 
 var template = {
     get:get,
-    parse:parse
+    parse:parse,
+    load:load
 };
 
-var index = {
-    template:template,
-    
+function scan (store) {
+
+    function getCmpt(name) { return store.find(function (v) { return v.name === name }) }
+    // 将 url 信息添加到组件
+    $('script').get().filter(function (v) {
+        return /^shelf-/.test(v.className)
+    }).map(function (v) {
+        var src = v.src;
+        var name = v.className.match(/^shelf-(\w*)/)[1];
+        if (getCmpt(name)) { getCmpt(name).url = src; }
+    });
+
+    // 通过 ajax 获取外部的组件模板
+    return new Promise(function (res) {
+        Promise.all(
+            store.filter(function (v) {
+                return v.path
+            }).map(function (v) {
+                return {
+                    name: v.name,
+                    url: path_resolve(v.url, v.path)
+                }
+            }).map(function (v) {
+                return new Promise(function (res, rej) {
+                    template.get(v.url).then(function (data) {
+                        getCmpt(v.name).template = template.parse(data);
+                        res();
+                    })['catch'](function (e) {
+                        rej('shelf load error' + e ? (':' + e) : '!');
+                    });
+                })
+            })
+        )['finally'](function () {
+            res();
+        });
+    })
+
+}
+
+
+// 只能解析路径，不可以用于解析 url
+function path_resolve(from, to) {
+    var to_arr = $.trim(to).split('/');
+    // 绝对路径的情况
+    if (to_arr[0] === '') return to
+    if (to_arr[0] === 'http') return to
+    if (to_arr[0] === 'https') return to
+
+    var back = 1;
+    while (to_arr[0] === '..' || to_arr[0] === '.') {
+        if (to_arr[0] === '.') {
+            to_arr.shift();
+            break
+        }
+        if (to_arr[0] === '..') {
+            back++;
+            to_arr.shift();
+        }
+    }
+
+    var from_arr = $.trim(from).split('/');
+
+    for (var i = 0; i < back; i++) {
+        if (from_arr.length === 0) from_arr.push('..');
+        else if (from_arr[from_arr.length - 1] === '..') from_arr.push('..');
+        else if (from_arr[from_arr.length - 1] === '.') {
+            from_arr.pop();
+            from_arr.push('..');
+        } else { from_arr.pop(); }
+    }
+
+    return from_arr.concat(to_arr).join('/')
+}
+
+var load$1 = template.load;
+
+function dom(str) {
+    var v = document.createElement('div');
+    v.innerHTML = $.trim(str);
+    return v.firstChild
+}
+// 节流函数，用于监听滚动
+function throttle(fn, delay) {
+    var timeout = null;
+    var PromiseRes = [];
+    return function () {
+        return new Promise(function (res) {
+            var _this = this;
+            PromiseRes.push(res);
+
+            if (timeout) clearTimeout(timeout);
+
+            timeout = setTimeout(function () {
+                fn.call(_this, arguments);
+                PromiseRes.forEach(function (v) { if (v) v(); });
+                PromiseRes = [];
+                timeout = null;
+            }, delay);
+        })
+    }
+}
+
+function common(op, component, store) {
+    var option = $.extend({}, op);
+
+    var name = option.name;
+    var path = option.path;
+    var template = option.template;
+    var $static = option.static || {};
+
+    var cmptClass = component;
+
+    if (!name) return
+    if (!template && !path) return
+    if (!(typeof cmptClass === 'function')) return
+
+    return {
+        name: name,
+        path: path,
+        creator: $.extend(
+            function (container, props) {
+                var cntr = container || dom('<div></div>');
+                var option = cmptClass() || {};
+                var cmpt = store.find(function (v) { return v.name === name });
+                var template = cmpt ? cmpt.template ? cmpt.template : [] : [];
+
+                var render = option.render || function (props) { return props || {} };
+                var init = option.init || function () { };
+
+                var data = render(props);
+                var html = load$1(template, data);
+                var outer = option.outer || {};
+
+                var obj = {
+                    name: name,
+                    data: data,
+                    root: cntr,
+                    template: template,
+                    update: throttle(function () {
+                        $(cntr).children().get().forEach(function (v) {
+                            cntr.removeChild(v);
+                        });
+                        cntr.innerHTML = load$1(obj.template, obj.data);
+                        init.call(obj, cntr);
+                    }, 100),
+                    emit: function (name, argus) {
+                        if (typeof outer[name] === 'function') {
+                            return outer[name].apply(obj, argus ? argus : [])
+                        }
+                    },
+                    destroy: function () {
+                        $(obj.root).remove();
+                        delete obj.template;
+                        delete obj.data;
+                        delete obj.name;
+                        delete obj.root;
+                        delete obj.update;
+                        delete obj.destroy;
+                        delete obj.emit;
+                    }
+                };
+                $(cntr).children().get().forEach(function (v) {
+                    cntr.removeChild(v);
+                });
+                cntr.innerHTML = html;
+                init.call(obj, cntr);
+                return obj
+            },
+            $static
+        )
+    }
+}
+
+function define (store) {
+    return {
+        defineWithPath: function (name, path, cmptClass) {
+            var cmpt = common({ name: name, path: path }, cmptClass, store);
+            if (cmpt) store.push(cmpt);
+        },
+        defineWithStaticAttr: function (cmptClass) {
+            var cmpt = common({ name: cmptClass.name, path: cmptClass.path, template: cmptClass.template }, cmptClass, store);
+            if (cmpt) store.push(cmpt);
+        },
+        defineCommon: function (op, component) {
+            var cmpt = common(op, component, store);
+            if (cmpt) store.push(cmpt);
+        }
+    }
+}
+
+var store = [];
+var task$1 = [];
+var defFunc = define(store);
+
+
+var Shelf = {
+    template: template,
+
+    define: defFunc.defineCommon,
+
+    get: function (name) { 
+        var cmpt = store.find(function (v) { return v.name === name });
+        if(cmpt) return cmpt.creator
+        else throw new Error("Can't find the component named '"+name+"'!")
+    },
+
+    done: function (cb) {
+        if (task$1) {
+            if(cb) task$1.push(cb);
+            
+            return new Promise(function(res,rej){
+                task$1.push(res);
+            })
+        }
+        else {
+            if(cb) cb();
+            return new Promise(function(res,rej){
+                res();
+            })
+        }
+        
+    },
+
+    _:{
+        store:function(){return store},
+        task:function(){return task$1}
+    }
 };
 
+$(function () {
+    scan(store).then(function () {
+        // 加载完成则调用 task 上所有挂载的任务 
+        if (task$1) task$1.forEach(function (cb) { cb(); });
+        // 不需要 task 去存储任务
+        task$1 = null;
+    });
+});
+
+function Dom$1(str) {
+    var v = document.createElement('div');
+    v.innerHTML = $.trim(str);
+    return v.firstChild || document.createElement('span')
+}
+
+
+window.Entry = function (arr, obj) {
+    var array = arr || [];
+    var target = obj || window;
+
+    array.forEach(function (v) {
+        switch (v) {
+            case 'Validate': target.Validate = Validate;
+                break
+            case 'Api': target.Api = Api;
+                break
+            case 'Shelf': target.Shelf = Shelf;
+                break
+            case 'Msger': target.Msger = Msger;
+                break
+            case 'Dom': target.Dom = Dom$1;
+                break
+        }
+
+    });
+
+    return target
+};
+
+exports.Msger = Msger;
 exports.Api = Api;
-exports.Shelf = index;
+exports.Dom = Dom$1;
+exports.Shelf = Shelf;
 exports.Validate = Validate;
