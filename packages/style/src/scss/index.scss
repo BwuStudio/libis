@@ -1,148 +1,148 @@
-@import './reset.scss';
-@import './common.scss';
-@import './globe/index.scss';
-
-
+@import "./reset.scss";
+@import "./common.scss";
+@import "./globe/index.scss";
 
 /* body style */
 
 .body {
-    height: 100%;
-    ;
-    width: 100%;
-    padding: 8px 8px;
-    overflow-y: auto;
-    overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+  padding: 8px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* btn style*/
 
 .btn_group {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .btn_group.right {
-    float: right;
+  float: right;
 }
 
 .btn_group.left {
-    float: left;
+  float: left;
 }
 
-.btn_group>a.block_btn, .btn_group>a.white_btn {
-    margin: 2px 0 2px 8px;
-    float: left;
+.btn_group > a.block_btn,
+.btn_group > a.white_btn {
+  margin: 2px 0 2px 8px;
+  float: left;
 }
 
-.row .btn_group>a.block_btn, .row .btn_group>a.white_btn {
-    margin: 0 0 0 8px;
+.row .btn_group > a.block_btn,
+.row .btn_group > a.white_btn {
+  margin: 0 0 0 8px;
 }
 
-a.block_btn, a.white_btn {
-    vertical-align: top;
-    display: inline-block;
-    height: 26px;
-    background-color: #0B70C1;
-    border: 1px solid #0B70C1;
-    line-height: 24px;
-    font-size: 14px;
-    color: #fff;
-    padding: 0 8px;
-    border-radius: 3px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3 ease-out;
+a.block_btn,
+a.white_btn {
+  vertical-align: top;
+  display: inline-block;
+  height: 26px;
+  background-color: #0b70c1;
+  border: 1px solid #0b70c1;
+  line-height: 24px;
+  font-size: 14px;
+  color: #fff;
+  padding: 0 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3 ease-out;
 }
 
 a.white_btn {
-    background-color: #fff;
-    color: #0B70C1;
+  background-color: #fff;
+  color: #0b70c1;
 }
 
 a.block_btn:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 a.white_btn:hover {
-    background: #efefef;
+  background: #efefef;
 }
 
 /* Input */
 
-.globe input.gb_form, select.gb_form {
-    vertical-align: top;
-    height: 26px;
-    min-width: 100px;
-    display: inline-block;
-    line-height: 24px;
-    padding: 0 0 0 6px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    outline: none;
-    background-color: #fff;
+.globe input.gb_form,
+select.gb_form {
+  vertical-align: top;
+  height: 26px;
+  min-width: 100px;
+  display: inline-block;
+  line-height: 24px;
+  padding: 0 0 0 6px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: #fff;
 }
 
 .globe label.gb_form {
-    vertical-align: top;
-    display: inline-block;
-    padding: 0 3px 0 6px;
-    line-height: 26px;
-    height: 26px;
+  vertical-align: top;
+  display: inline-block;
+  padding: 0 3px 0 6px;
+  line-height: 26px;
+  height: 26px;
 }
 
-.globe input.gb_form:focus, .globe select.gb_form:focus {
-    border-color: #808891;
+.globe input.gb_form:focus,
+.globe select.gb_form:focus,
+.globe textarea.gb_form:focus {
+  border-color: #808891;
 }
-
-
-
-
-
+.globe input.gb_form:disabled,
+.globe select.gb_form:disabled,
+.globe textarea.gb_form:disabled {
+    background-color: rgb(235, 235, 228);
+}
 /* form */
 
 .legend {
-    height: 26px;
-    position: relative;
-    line-height: 26px;
-    display: block;
-    border-bottom: 2px solid #0B70C1;
-    margin: 4px;
-    padding: 0 6px;
-    color: #0B70C1;
+  height: 26px;
+  position: relative;
+  line-height: 26px;
+  display: block;
+  border-bottom: 2px solid #0b70c1;
+  margin: 4px;
+  padding: 0 6px;
+  color: #0b70c1;
 }
 
 fieldset .row {
-    width: 100%;
-    height: 32px;
-    padding: 3px 6px;
-    line-height: 26px;
+  width: 100%;
+  height: 32px;
+  padding: 3px 6px;
+  line-height: 26px;
 }
 
 /* grid system */
 
-
 label {
-    white-space: nowrap;
-    word-wrap: normal;
-    word-break: keep-all;
-    padding: 0 6px;
+  white-space: nowrap;
+  word-wrap: normal;
+  word-break: keep-all;
+  padding: 0 6px;
 }
-
 
 /* textarea */
 
 textarea.gb_form {
-    width: 100%;
-    line-height: 18px;
-    padding: 4px 8px;
-    resize: none;
-    height: 100%;
-    min-height: 72px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
+  width: 100%;
+  line-height: 18px;
+  padding: 4px 8px;
+  resize: none;
+  height: 100%;
+  min-height: 72px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
 }
 
 .globe textarea.gb_form:focus {
-    border-color: #808891;
+  border-color: #808891;
 }
-
