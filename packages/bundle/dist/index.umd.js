@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
 	(global = global || self, factory(global.bundle = {}));
-}(this, function (exports) { 'use strict';
+}(this, (function (exports) { 'use strict';
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -1596,7 +1596,7 @@
 	    getUrlParam: function (name) {//封装方法
 	        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
 	        var r = window.location.search.substr(1).match(reg); //匹配目标参数
-	        if (r != null) return unescape(r[2]);
+	        if (r != null) return window.decodeURIComponent(r[2]);
 	        return null; //返回参数值
 	    }
 	};
@@ -1616,5 +1616,5 @@
 	exports.Tool = Tool;
 	exports.Validate = Validate;
 
-}));
+})));
 //# sourceMappingURL=index.umd.js.map
