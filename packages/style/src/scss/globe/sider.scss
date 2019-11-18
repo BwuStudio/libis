@@ -1,13 +1,27 @@
-  // sider
-  &.with_sider {
-    margin-left: 240px;
-  }
-  > .sider {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -240px;
-    width: 240px;
-    background-color: rgb(239, 245, 250);
-    border-right: 1px solid rgb(170, 182, 208);
-  }
+// sider
+&.with_sider {
+  margin-left: 240px;
+}
+> .sider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -240px;
+  width: 240px;
+  background-color: rgb(239, 245, 250);
+  border-right: 1px solid rgb(170, 182, 208);
+}
+
+// sider
+&.with_sider_right {
+  margin-right: 320px;
+}
+> .sider_right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -320px;
+  width: 320px;
+  background-color: rgb(239, 245, 250);
+  border-left: 1px solid rgb(170, 182, 208);
+}

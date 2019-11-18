@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="/packages/bundle/dist/index.umd.js"></script>
+
+    <style>
+        .search_detail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 400px;
+            background: rgb(0,0,0,0.05);
+            border-bottom: 1px solid #ccc;
+            transition: all 0.2s ease-out;
+        }
+
+        .search_detail.hide{
+            top:-400px;
+        }
+
+        .body{
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="globe with_head">
+        <div class="head">
+            <div class="row">
+                <input type="text" class="gb_form">
+                <a id="detail_panel" class="inline_btn" style="float: none;">查询条件</a>
+                <a href="" class="block_btn">查询</a>
+            </div>
+
+        </div>
+        <div class="body">
+            <div class="search_detail"></div>
+        </div>
+    </div>
+
+    <script>
+    $("#detail_panel").get(0).onclick = function(){
+        $(".search_detail").get().forEach(function(v){
+            v.className = v.className === 'search_detail'? 'search_detail hide':'search_detail'
+        })
+    }
+    </script>
+</body>
+
+</html>

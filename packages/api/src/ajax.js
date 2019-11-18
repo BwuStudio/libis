@@ -11,7 +11,7 @@ if (!$('#loading_bar').get(0)) {
 }
 // 通用的 ajax 方法，添加了异常处理逻辑
 var task = 0
-export default function ajax(op) {
+function ajax(op) {
     task += 1
     $('#loading_bar').get(0).style.top = 0
     return new Promise(function (res, rej) {
@@ -44,3 +44,25 @@ export default function ajax(op) {
         }, op));
     })
 }
+
+ajax.config = function (url) {
+    return new Promise(function (res, rej) {
+        $.ajax({
+            type: "get",
+            url: url || '',
+            async: true,
+            success: function (data) {
+                try {
+                    var ms = typeof data == 'string' ? JSON.parse(data) : data
+                    res(ms)
+                }
+                catch (e) { rej(data) }
+            },
+            error: function (data) {
+                rej(data)
+            }
+        })
+    })
+}
+
+export default ajax

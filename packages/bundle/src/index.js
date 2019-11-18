@@ -14,7 +14,19 @@ function Dom(str, fn) {
         v = document.createElement('table')
         v.innerHTML = $.trim(str)
         e = $(v).find('tr').get(0) || document.createElement('tr')
-    } else {
+    } else if (/^\s*<\s*td\s*/.test(str)) {
+        v = document.createElement('tr')
+        v.innerHTML = $.trim(str)
+        e = $(v).find('td').get(0) || document.createElement('td')
+    } else if (/^\s*<\s*li\s*/.test(str)) {
+        v = document.createElement('ul')
+        v.innerHTML = $.trim(str)
+        e = $(v).find('li').get(0) || document.createElement('li')
+    } else if (/^\s*<\s*option\s*/.test(str)) {
+        v = document.createElement('select')
+        v.innerHTML = $.trim(str)
+        e = $(v).find('option').get(0) || document.createElement('option')
+    } else{
         v = document.createElement('div')
         v.innerHTML = $.trim(str)
         e = v.firstChild || document.createElement('span')

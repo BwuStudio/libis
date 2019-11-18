@@ -47,6 +47,26 @@ function ajax(op) {
     })
 }
 
+ajax.config = function (url) {
+    return new Promise(function (res, rej) {
+        $.ajax({
+            type: "get",
+            url: url || '',
+            async: true,
+            success: function (data) {
+                try {
+                    var ms = typeof data == 'string' ? JSON.parse(data) : data;
+                    res(ms);
+                }
+                catch (e) { rej(data); }
+            },
+            error: function (data) {
+                rej(data);
+            }
+        });
+    })
+};
+
 function Api(func) {
     var res = {};
     var reg = function (name, call) { res[name] = call; };
